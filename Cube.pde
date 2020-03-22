@@ -1,15 +1,16 @@
 import peasy.*;
+PeasyCam cam; //for mouse driven camera control
 
+enum Axis {
+  X,
+  Y,
+  Z
+}  
 
-PeasyCam cam;
-
-
-int d = 3; //dimension
-
-Square[] cube = new Square[d*d*d];
+Square[] cube = new Square[27];
 
 void setup() {
-  size(1000,1000,P3D);
+  size(600,600,P3D);
   cam = new PeasyCam(this,400);
   //initialize our cube 
   int index = 0;
@@ -25,84 +26,75 @@ void setup() {
   }  
 } 
 
-int index = 0;
-
-void turnX(int index,int dir)  {
+void turn(Axis axis, int index, int dir) {
   for (int i = 0; i < cube.length; i++) {
     Square sq = cube[i];
-    if (sq.x == index) {
-      PMatrix2D matrix = new PMatrix2D();
-      matrix.rotate(dir*HALF_PI);  
-      matrix.translate(sq.y,sq.z ); 
-      sq.update(sq.x,round(matrix.m02),round(matrix.m12));
-      sq.turnFacesX(dir);
+    PMatrix2D matrix = new PMatrix2D();
+    matrix.rotate(dir*HALF_PI);
+    switch (axis) {
+      case X:
+        if (sq.x == index) {
+           matrix.translate(sq.y,sq.z ); 
+           sq.update(sq.x,round(matrix.m02),round(matrix.m12));
+           sq.turnFacesX(dir);
+        } 
+        break;
+      case Y:
+        if (sq.y == index) { 
+        matrix.translate(sq.x,sq.z ); 
+        sq.update(round(matrix.m02),sq.y,round(matrix.m12)); 
+        sq.turnFacesY(dir);
+        }
+        break;
+      case Z:
+        if (sq.z == index) {
+          matrix.rotate(dir*HALF_PI);  
+          matrix.translate(sq.x,sq.y); 
+          sq.turnFacesZ(dir);
+        }
+        break;
     }
-  }
-}
-
-void turnY(int index, int dir)  {
-  for (int i = 0; i < cube.length; i++) {
-    Square sq = cube[i];
-    if (sq.y == index) {
-      PMatrix2D matrix = new PMatrix2D();
-      matrix.rotate(dir*HALF_PI);  
-      matrix.translate(sq.x,sq.z ); 
-      sq.update(round(matrix.m02),sq.y,round(matrix.m12)); 
-      sq.turnFacesY(dir);
-    }
-  }
-}
-
-void turnZ(int index, int dir)  {
-  for (int i = 0; i < cube.length; i++) {
-    Square sq = cube[i];
-    if (sq.z == index) {
-      PMatrix2D matrix = new PMatrix2D();
-      matrix.rotate(dir*HALF_PI);  
-      matrix.translate(sq.x,sq.y); 
-      sq.update(round(matrix.m02),round(matrix.m12),sq.z); 
-      sq.turnFacesZ(dir);
-    }
-  }
-}
-
+  }  
+}  
+    
+    
 void keyPressed() {
   switch (key) {
     case 'b': //back
-      turnZ(-1,1);
+      turn(Axis.Z,-1,1);
       break;
     case 'B': //back prime
-      turnZ(-1,-1);
+      turn(Axis.Z,-1,-1);
       break;
     case 'g': //front
-      turnZ(1,1);
+      turn(Axis.Z,1,1);
       break;
     case 'G': //front prime
-      turnZ(1,-1);
-      turnY(-1,-1);
+      turn(Axis.Z,1,-1);
+      turn(Axis.Y,-1,-1);
     case 'y': //up
-      turnY(-1,1);
+      turn(Axis.Y,-1,1);
       break;
     case 'Y': //up prime
-      turnY(-1,-1);
+      turn(Axis.Y,-1,-1);
       break;      
     case 'w': //down
-      turnY(1,1);
+      turn(Axis.Y,1,1);
       break;
     case 'W': //down prime
-      turnY(1,-1);
+      turn(Axis.Y,1,-1);
       break;      
     case 'r': //left
-      turnX(-1,1);
+      turn(Axis.X,-1,1);
       break; 
     case 'R': //left prime
-      turnX(-1,-1);
+      turn(Axis.X,-1,-1);
       break;       
     case 'o': //right
-      turnX(1,1);
+      turn(Axis.X,1,1);
       break;
     case 'O': //right prime
-      turnX(1,-1);
+      turn(Axis.X,1,-1);
       break;      
   }  
 }
