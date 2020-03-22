@@ -1,36 +1,32 @@
 class Face {
   PVector normal;
   color c;
-  
   Face(PVector normal, color c) {
     this.normal = normal;
     this.c = c; 
   }  
   
-  void turnZ(float angle) {
-     PVector v2 = new PVector();
-     v2.x = round(normal.x * cos(angle) - normal.y * sin(angle));
-     v2.y = round(normal.x * sin(angle) + normal.y * cos(angle));
-     v2.z = round(normal.z);
-     normal = v2; 
-  }
-  
-  void turnY(float angle) {
-     PVector v2 = new PVector();
-     v2.x = round(normal.x * cos(angle) - normal.z * sin(angle));
-     v2.z = round(normal.x * sin(angle) + normal.z * cos(angle));
-     v2.y = round(normal.y);
-     normal = v2;   
-  }
-  
-  void turnX(float angle) {
-     PVector v2 = new PVector();
-     v2.y = round(normal.y * cos(angle) - normal.z * sin(angle));
-     v2.z = round(normal.y * sin(angle) + normal.z * cos(angle));
-     v2.x = round(normal.x);
-     normal = v2;    
-  }
-  
+  void turn(Axis axis, float angle) {
+    PVector newV = new PVector();
+    switch (axis) {
+      case X:
+        newV.y = round(normal.y * cos(angle) - normal.z * sin(angle));
+        newV.z = round(normal.y * sin(angle) + normal.z * cos(angle));
+        newV.x = round(normal.x);
+        break;
+      case Y:
+        newV.x = round(normal.x * cos(angle) - normal.z * sin(angle));
+        newV.z = round(normal.x * sin(angle) + normal.z * cos(angle));
+        newV.y = round(normal.y);
+        break;
+      case Z:
+        newV.x = round(normal.x * cos(angle) - normal.y * sin(angle));
+        newV.y = round(normal.x * sin(angle) + normal.y * cos(angle));
+        newV.z = round(normal.z);
+        break;
+    }  
+    normal = newV;
+  }  
  
   
   void show() {

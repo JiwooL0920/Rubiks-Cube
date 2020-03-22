@@ -1,5 +1,10 @@
 import peasy.*;
 PeasyCam cam; //for mouse driven camera control
+Stopwatch myWatch;
+
+boolean start = false;
+
+Move m;
 
 enum Axis {
   X,
@@ -9,10 +14,20 @@ enum Axis {
 
 Square[] cube = new Square[27];
 
+void setUpText() {
+  textSize(64);
+  myWatch = new Stopwatch(10); 
+}
+    
 void setup() {
   size(600,600,P3D);
   cam = new PeasyCam(this,400);
-  //initialize our cube 
+  setUpText();
+  init();
+  m = new Move(0,0,1,1);
+} 
+
+void init() {
   int index = 0;
   for (int x = -1; x <= 1; x++) {
     for (int y = -1; y <= 1; y++) {
@@ -23,8 +38,8 @@ void setup() {
         index++;
       }  
     }
-  }  
-} 
+  } 
+}  
 
 void turn(Axis axis, int index, int dir) {
   for (int i = 0; i < cube.length; i++) {
@@ -36,27 +51,28 @@ void turn(Axis axis, int index, int dir) {
         if (sq.x == index) {
            matrix.translate(sq.y,sq.z ); 
            sq.update(sq.x,round(matrix.m02),round(matrix.m12));
-           sq.turnFacesX(dir);
+           sq.turnFaces(axis,dir);
         } 
         break;
       case Y:
         if (sq.y == index) { 
         matrix.translate(sq.x,sq.z ); 
         sq.update(round(matrix.m02),sq.y,round(matrix.m12)); 
-        sq.turnFacesY(dir);
+        sq.turnFaces(axis,dir);
         }
         break;
       case Z:
         if (sq.z == index) {
           matrix.rotate(dir*HALF_PI);  
           matrix.translate(sq.x,sq.y); 
-          sq.turnFacesZ(dir);
+          sq.turnFaces(axis,dir);
         }
         break;
     }
   }  
 }  
-    
+
+
     
 void keyPressed() {
   switch (key) {
@@ -71,7 +87,7 @@ void keyPressed() {
       break;
     case 'G': //front prime
       turn(Axis.Z,1,-1);
-      turn(Axis.Y,-1,-1);
+      turn(Axis.Y,-1,-1); //error.. im not sure why
     case 'y': //up
       turn(Axis.Y,-1,1);
       break;
@@ -95,14 +111,33 @@ void keyPressed() {
       break;
     case 'O': //right prime
       turn(Axis.X,1,-1);
-      break;      
+      break;    
+    case '1': //restart
+      init();
+      break;
+    case '2': //start
+      m.start();
+      break;
+      
   }  
 }
 
 void draw() {
   background(50);
   scale(50);
+    m .update();  
+
   for (int i = 0; i < cube.length; i++) {
-        cube[i].show();
+    push();
+    if (cube[i].z == m.z) rotateZ(m.angle);
+    cube[i].show();
+    pop();
   }
+ 
+  
+  //if (start) {
+  //  text(myWatch.start(),-20,200);
+  //}
+
+
 }
