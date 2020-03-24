@@ -7,7 +7,7 @@ boolean start = false;
 boolean madeMove = false;
 
 //Move currentMove;
-Move currentMove = new Move(Axis.Y,1,1); //initialize to something or else error in draw
+Move currentMove; //initialize to something or else error in draw
 
 enum Axis {
   X,
@@ -32,6 +32,7 @@ Move[] moves = new Move[] {
   new Move(Axis.Z,-1,-1) //B'
 };
 
+int counter = 0;
 Move[] shuffleSequence = new Move[15];
 
 void setUpText() {
@@ -44,6 +45,8 @@ void setup() {
   cam = new PeasyCam(this,400);
   setUpText();
   init();
+  shuffle();
+  currentMove = shuffleSequence[counter];
 } 
 
 void init() {
@@ -71,14 +74,7 @@ void shuffle() {
   for (int j = 0; j < r.length; j++) {
     shuffleSequence[j] = moves[r[j]]; 
   }  
-  println(r);
-  //Shuffle and animate the movement
-  for (Move m : shuffleSequence) {
-    currentMove = m;
-    currentMove.start();
-    currentMove.update();
-  }  
-  
+
 }
 
 void turn(Axis axis, int index, int dir) {
@@ -165,10 +161,14 @@ void keyPressed() {
       currentMove = moves[5];
       currentMove.start();
       break;    
-    case '1': //restart
-      shuffle();
+    case '1': //start
+      if (!start) currentMove.start();
+      start = true;
       break;
-    case '2': //start
+    case '2': //restart
+      start = false;
+      counter = 0;
+      currentMove = shuffleSequence[counter];
       init();
       break;
   }  
@@ -195,6 +195,15 @@ void draw() {
   
   scale(50);
   currentMove.update();
+  
+  if (currentMove.finished) {
+    if (counter < shuffleSequence.length-1) {
+      counter++;
+      currentMove = shuffleSequence[counter];
+      currentMove.start();
+    }
+  }
+  
   for (int i = 0; i < cube.length; i++) {
     push();
     if (madeMove) {

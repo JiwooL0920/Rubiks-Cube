@@ -4,6 +4,7 @@ class Move {
   Axis axis;
   int index;
   boolean animating = false;
+  boolean finished = false;
   
   Move(Axis axis, int index, int dir) {
       this.axis = axis;
@@ -13,9 +14,8 @@ class Move {
   
   void start() {
     animating = true;
-    this.angle = 0;
+    finished = false;
   }  
-  
   
   void update() {
     if (animating) {
@@ -23,10 +23,13 @@ class Move {
       if (abs(angle) > HALF_PI) {
         angle = 0;  
         animating = false;
+        finished = true;
         if (abs(this.index) > 0) {
           turn(this.axis,this.index,dir);
         }  
       }  
     } 
   }
+
+  
 } 
