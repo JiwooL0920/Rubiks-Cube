@@ -106,9 +106,9 @@ void keyPressed() {
       currentMove.start();
       break;
     case 'G': //front prime
-      turn(Axis.Y,-1,-1); //error.. im not sure why
       currentMove = moves[9];
       currentMove.start();
+      break;
     case 'y': //up
       currentMove = moves[2];
       currentMove.start();
