@@ -112,66 +112,74 @@ void turn(Axis axis, int index, int dir) {
     
 void keyPressed() {
   madeMove = true;
-  switch (key) {
-    case 'q': //back
-      currentMove = moves[11];
-      currentMove.start();
-      break;
-    case 'Q': //back prime
-      currentMove = moves[10];
-      currentMove.start();
-      break;
-    case 'w': //front
-      currentMove = moves[8];
-      currentMove.start();
-      break;
-    case 'W': //front prime
-      currentMove = moves[9];
-      currentMove.start();
-      break;
-    case 'e': //up
-      currentMove = moves[2];
-      currentMove.start();
-      break;
-    case 'E': //up prime
-      currentMove = moves[3];
-      currentMove.start();
-      break;      
-    case 'a': //down
-      currentMove = moves[1];
-      currentMove.start();
-      break;
-    case 'A': //down prime
-      currentMove = moves[0];
-      currentMove.start();    
-      break;      
-    case 's': //left
-      currentMove = moves[7];
-      currentMove.start();
-      break; 
-    case 'S': //left prime
-      currentMove = moves[6];
-      currentMove.start();
-      break;       
-    case 'd': //right
-      currentMove = moves[4];
-      currentMove.start();
-      break;
-    case 'D': //right prime
-      currentMove = moves[5];
-      currentMove.start();
-      break;    
-    case '1': //start
-      if (!start) currentMove.start();
-      start = true;
-      break;
-    case '2': //restart
-      start = false;
-      counter = 0;
-      currentMove = shuffleSequence[counter];
-      init();
-      break;
-  }  
+  if (start && !currentMove.animating) {
+    switch (key) {
+      case 'q': //back
+        currentMove = moves[11];
+        currentMove.start();
+        break;
+      case 'Q': //back prime
+        currentMove = moves[10];
+        currentMove.start();
+        break;
+      case 'w': //front
+        currentMove = moves[8];
+        currentMove.start();
+        break;
+      case 'W': //front prime
+        currentMove = moves[9];
+        currentMove.start();
+        break;
+      case 'e': //up
+        currentMove = moves[2];
+        currentMove.start();
+        break;
+      case 'E': //up prime
+        currentMove = moves[3];
+        currentMove.start();
+        break;      
+      case 'a': //down
+        currentMove = moves[1];
+        currentMove.start();
+        break;
+      case 'A': //down prime
+        currentMove = moves[0];
+        currentMove.start();    
+        break;      
+      case 's': //left
+        currentMove = moves[7];
+        currentMove.start();
+        break; 
+      case 'S': //left prime
+        currentMove = moves[6];
+        currentMove.start();
+        break;       
+      case 'd': //right
+        currentMove = moves[4];
+        currentMove.start();
+        break;
+      case 'D': //right prime
+        currentMove = moves[5];
+        currentMove.start();
+        break;    
+      case '2': //restart
+        start = false;
+        madeMove = false;
+        counter = 0;
+        shuffle(); //get new sequence of random shuffles
+        //currentMove = shuffleSequence[counter];
+        init();
+        break;
+    }
+  } else {
+      switch (key) { 
+       case '1': //start
+        if (!start) currentMove.start();
+        start = true;
+        break; 
+      }
+    }  
+  
 }
 
 void draw() {
