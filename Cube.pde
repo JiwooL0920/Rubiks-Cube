@@ -1,6 +1,7 @@
 import peasy.*;
 PeasyCam cam; //for mouse driven camera control
 Stopwatch myWatch;
+import java.util.Arrays;
 
 boolean start = false;
 boolean madeMove = false;
@@ -31,6 +32,8 @@ Move[] moves = new Move[] {
   new Move(Axis.Z,-1,-1) //B'
 };
 
+Move[] shuffleSequence = new Move[15];
+
 void setUpText() {
   textSize(64);
   myWatch = new Stopwatch(10); 
@@ -56,6 +59,27 @@ void init() {
     }
   } 
 }  
+
+void shuffle() {
+  //get random numbers that's gonna be index of moves
+  int[] r = new int[shuffleSequence.length];
+  for (int i = 0; i < r.length; i++) {
+    int n = int(random(0,11)); 
+    r[i] = n;
+  }  
+  //Generate random sequence of moves 
+  for (int j = 0; j < r.length; j++) {
+    shuffleSequence[j] = moves[r[j]]; 
+  }  
+  println(r);
+  //Shuffle and animate the movement
+  for (Move m : shuffleSequence) {
+    currentMove = m;
+    currentMove.start();
+    currentMove.update();
+  }  
+  
+}
 
 void turn(Axis axis, int index, int dir) {
   for (int i = 0; i < cube.length; i++) {
@@ -142,10 +166,10 @@ void keyPressed() {
       currentMove.start();
       break;    
     case '1': //restart
-      init();
+      shuffle();
       break;
     case '2': //start
-      currentMove.start();
+      init();
       break;
   }  
 }
@@ -174,9 +198,6 @@ void draw() {
   for (int i = 0; i < cube.length; i++) {
     push();
     if (madeMove) {
-      
-      
-      
       if (abs(cube[i].x) > 0 && currentMove.axis == Axis.X && cube[i].x == currentMove.index) {
         rotateX(currentMove.angle);
       } else if (abs(cube[i].y) > 0 && currentMove.axis == Axis.Y && cube[i].y == currentMove.index) {

@@ -24,7 +24,7 @@ class Square {
    
    void turnFaces(Axis axis,int dir) {
      for (Face f : faces) {
-       f.turn(axis,dir*HALF_PI);
+       f.turnFace(axis,dir*HALF_PI);
      }
    }
    

@@ -13,6 +13,7 @@ class Move {
   
   void start() {
     animating = true;
+    this.angle = 0;
   }  
   
   

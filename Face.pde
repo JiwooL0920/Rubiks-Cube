@@ -6,7 +6,7 @@ class Face {
     this.c = c; 
   }  
   
-  void turn(Axis axis, float angle) {
+  void turnFace(Axis axis, float angle) {
     PVector newV = new PVector();
     switch (axis) {
       case X:
