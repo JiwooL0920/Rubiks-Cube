@@ -3,8 +3,10 @@ PeasyCam cam; //for mouse driven camera control
 Stopwatch myWatch;
 
 boolean start = false;
+boolean madeMove = false;
 
-Move m;
+//Move currentMove;
+Move currentMove = new Move(0,0,1,1); //initialize to something or else error in draw
 
 enum Axis {
   X,
@@ -13,6 +15,21 @@ enum Axis {
 }  
 
 Square[] cube = new Square[27];
+
+Move[] moves = new Move[] {
+  new Move(0,1,0,1), //U
+  new Move(0,1,0,-1), //U'
+  new Move(0,-1,0,1), //D
+  new Move(0,-1,0,-1), //D'
+  new Move(1,0,0,1), //L
+  new Move(1,0,0,-1), //L'
+  new Move(-1,0,0,1), //R
+  new Move(-1,0,0,-1), //R'
+  new Move(0,0,1,1), //F
+  new Move(0,0,1,-1), //F'
+  new Move(0,0,-1,1), //B
+  new Move(0,0,-1,-1) //B'
+};
 
 void setUpText() {
   textSize(64);
@@ -24,7 +41,6 @@ void setup() {
   cam = new PeasyCam(this,400);
   setUpText();
   init();
-  m = new Move(0,0,1,1);
 } 
 
 void init() {
@@ -75,61 +91,80 @@ void turn(Axis axis, int index, int dir) {
 
     
 void keyPressed() {
+  madeMove = true;
   switch (key) {
     case 'b': //back
-      turn(Axis.Z,-1,1);
+      currentMove = moves[10];
+      currentMove.start();
       break;
     case 'B': //back prime
-      turn(Axis.Z,-1,-1);
+      currentMove = moves[11];
+      currentMove.start();
       break;
     case 'g': //front
-      turn(Axis.Z,1,1);
+      currentMove = moves[8];
+      currentMove.start();
       break;
     case 'G': //front prime
-      turn(Axis.Z,1,-1);
       turn(Axis.Y,-1,-1); //error.. im not sure why
+      currentMove = moves[9];
+      currentMove.start();
     case 'y': //up
-      turn(Axis.Y,-1,1);
+      currentMove = moves[0];
+      currentMove.start();     
       break;
     case 'Y': //up prime
-      turn(Axis.Y,-1,-1);
+      currentMove = moves[1];
+      currentMove.start();
       break;      
     case 'w': //down
-      turn(Axis.Y,1,1);
+      currentMove = moves[2];
+      currentMove.start();
       break;
     case 'W': //down prime
-      turn(Axis.Y,1,-1);
+      currentMove = moves[3];
+      currentMove.start();
       break;      
     case 'r': //left
-      turn(Axis.X,-1,1);
+      currentMove = moves[4];
+      currentMove.start();
       break; 
     case 'R': //left prime
-      turn(Axis.X,-1,-1);
+      currentMove = moves[5];
+      currentMove.start();
       break;       
     case 'o': //right
-      turn(Axis.X,1,1);
+      currentMove = moves[6];
+      currentMove.start();
       break;
     case 'O': //right prime
-      turn(Axis.X,1,-1);
+      currentMove = moves[7];
+      currentMove.start();
       break;    
     case '1': //restart
       init();
       break;
     case '2': //start
-      m.start();
+      currentMove.start();
       break;
-      
   }  
 }
 
 void draw() {
   background(50);
   scale(50);
-    m .update();  
-
+  currentMove.update();
   for (int i = 0; i < cube.length; i++) {
     push();
-    if (cube[i].z == m.z) rotateZ(m.angle);
+    if (madeMove) {
+      if (abs(cube[i].x) > 0 && cube[i].x == currentMove.x) {
+        rotateX(currentMove.angle);
+      } else if (abs(cube[i].y) > 0 && cube[i].y == currentMove.y) {
+        rotateY(-currentMove.angle);
+      } else if (abs(cube[i].z) > 0 && cube[i].z == currentMove.z) {
+        rotateZ(currentMove.angle );
+      }  
+    }   
     cube[i].show();
     pop();
   }
@@ -138,6 +173,5 @@ void draw() {
   //if (start) {
   //  text(myWatch.start(),-20,200);
   //}
-
 
 }

@@ -18,13 +18,19 @@ class Move {
   }  
   
   
-  
   void update() {
     if (animating) {
       angle += dir * 0.1;
-      if (angle > HALF_PI) {
-        angle = 0;
+      if (abs(angle) > HALF_PI) {
+        angle = 0;  
         animating = false;
+        if (abs(x) > 0) {
+          turn(Axis.X,x,dir);
+        } else if (abs(y) > 0) {
+          turn(Axis.Y,y,dir);
+        } else if (abs(z) > 0) {
+          turn(Axis.Z,z,dir); 
+        } 
       }  
     }  
   } 
