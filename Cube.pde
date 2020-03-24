@@ -156,8 +156,17 @@ void draw() {
   //Text messages
   cam.beginHUD();
   fill(255);
-  textSize(32);
-  text("Hello", 100, 100);
+  textSize(15);
+  text("Key Commands", 10, 40);
+  text("1 = Start", 10, 60);
+  text("2 = Restart", 10, 80);
+  text("q = rotate blue", 10, 120);
+  text("w = rotate green", 10, 140);
+  text("e = rotate yellow", 10, 160);
+  text("a = rotate white", 10, 180);
+  text("s = rotate red", 10, 200);
+  text("d = rotate orange", 10, 220);
+  text("shift+q|w|e|a|s|d \n= counterclockwise", 10, 260);
   cam.endHUD();
   
   scale(50);

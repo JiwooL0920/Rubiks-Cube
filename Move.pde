@@ -33,6 +33,7 @@ class Move {
         } 
       }  
     }  
+    delay(10);
   } 
     }  
  
