@@ -6,7 +6,7 @@ boolean start = false;
 boolean madeMove = false;
 
 //Move currentMove;
-Move currentMove = new Move(0,0,1,1); //initialize to something or else error in draw
+Move currentMove = new Move(Axis.Y,1,1); //initialize to something or else error in draw
 
 enum Axis {
   X,
@@ -17,18 +17,18 @@ enum Axis {
 Square[] cube = new Square[27];
 
 Move[] moves = new Move[] {
-  new Move(0,1,0,1), //U
-  new Move(0,1,0,-1), //U'
-  new Move(0,-1,0,1), //D
-  new Move(0,-1,0,-1), //D'
-  new Move(1,0,0,1), //L
-  new Move(1,0,0,-1), //L'
-  new Move(-1,0,0,1), //R
-  new Move(-1,0,0,-1), //R'
-  new Move(0,0,1,1), //F
-  new Move(0,0,1,-1), //F'
-  new Move(0,0,-1,1), //B
-  new Move(0,0,-1,-1) //B'
+  new Move(Axis.Y,1,1), //U
+  new Move(Axis.Y,1,-1), //U'
+  new Move(Axis.Y,-1,1), //D
+  new Move(Axis.Y,-1,-1), //D'
+  new Move(Axis.X,1,1), //L
+  new Move(Axis.X,1,-1), //L'
+  new Move(Axis.X,-1,1), //R
+  new Move(Axis.X,-1,-1), //R'
+  new Move(Axis.Z,1,1), //F
+  new Move(Axis.Z,1,-1), //F'
+  new Move(Axis.Z,-1,1), //B
+  new Move(Axis.Z,-1,-1) //B'
 };
 
 void setUpText() {
@@ -79,9 +79,9 @@ void turn(Axis axis, int index, int dir) {
         break;
       case Z:
         if (sq.z == index) {
-          matrix.rotate(dir*HALF_PI);  
-          matrix.translate(sq.x,sq.y); 
-          sq.turnFaces(axis,dir);
+        matrix.translate(sq.x, sq.y);
+        sq.update(round(matrix.m02), round(matrix.m12), round(sq.z));
+        sq.turnFaces(axis,dir);
         }
         break;
     }
@@ -166,7 +166,7 @@ void draw() {
   text("a = rotate white", 10, 180);
   text("s = rotate red", 10, 200);
   text("d = rotate orange", 10, 220);
-  text("shift+q|w|e|a|s|d \n = counterclockwise", 10, 2);
+  text("shift+q|w|e|a|s|d \n = counterclockwise", 10, 260);
   cam.endHUD();
   
   scale(50);
@@ -174,11 +174,14 @@ void draw() {
   for (int i = 0; i < cube.length; i++) {
     push();
     if (madeMove) {
-      if (abs(cube[i].x) > 0 && cube[i].x == currentMove.x) {
+      
+      
+      
+      if (abs(cube[i].x) > 0 && currentMove.axis == Axis.X && cube[i].x == currentMove.index) {
         rotateX(currentMove.angle);
-      } else if (abs(cube[i].y) > 0 && cube[i].y == currentMove.y) {
+      } else if (abs(cube[i].y) > 0 && currentMove.axis == Axis.Y && cube[i].y == currentMove.index) {
         rotateY(-currentMove.angle);
-      } else if (abs(cube[i].z) > 0 && cube[i].z == currentMove.z) {
+      } else if (abs(cube[i].z) > 0 && currentMove.axis == Axis.Z && cube[i].z == currentMove.index) {
         rotateZ(currentMove.angle );
       }  
     }   

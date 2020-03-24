@@ -1,15 +1,13 @@
 class Move {
   float angle = 0;
-  int x = 0; //right left
-  int y = 0; //up or down
-  int z = 0; //front or back 
   int dir;
+  Axis axis;
+  int index;
   boolean animating = false;
   
-  Move(int x, int y, int z, int dir) {
-      this.x = x;
-      this.y = y;
-      this.z = z;
+  Move(Axis axis, int index, int dir) {
+      this.axis = axis;
+      this.index = index;
       this.dir = dir;
   }   
   
@@ -24,16 +22,10 @@ class Move {
       if (abs(angle) > HALF_PI) {
         angle = 0;  
         animating = false;
-        if (abs(z) > 0) {
-          turn(Axis.Z,z, dir);
-        } else if (abs(x) > 0) {
-          turn(Axis.X,x, dir);
-        } else if (abs(y) > 0) {
-          turn(Axis.Y,y, dir);
-        }
+        if (abs(this.index) > 0) {
+          turn(this.axis,this.index,dir);
+        }  
       }  
-    }  
-    delay(10);
-  } 
-    }  
- 
+    } 
+  }
+} 
