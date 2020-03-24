@@ -93,51 +93,51 @@ void turn(Axis axis, int index, int dir) {
 void keyPressed() {
   madeMove = true;
   switch (key) {
-    case 'b': //back
+    case 'q': //back
       currentMove = moves[11];
       currentMove.start();
       break;
-    case 'B': //back prime
+    case 'Q': //back prime
       currentMove = moves[10];
       currentMove.start();
       break;
-    case 'g': //front
+    case 'w': //front
       currentMove = moves[8];
       currentMove.start();
       break;
-    case 'G': //front prime
+    case 'W': //front prime
       currentMove = moves[9];
       currentMove.start();
       break;
-    case 'y': //up
+    case 'e': //up
       currentMove = moves[2];
       currentMove.start();
       break;
-    case 'Y': //up prime
+    case 'E': //up prime
       currentMove = moves[3];
       currentMove.start();
       break;      
-    case 'w': //down
+    case 'a': //down
       currentMove = moves[1];
       currentMove.start();
       break;
-    case 'W': //down prime
+    case 'A': //down prime
       currentMove = moves[0];
       currentMove.start();    
       break;      
-    case 'r': //left
+    case 's': //left
       currentMove = moves[7];
       currentMove.start();
       break; 
-    case 'R': //left prime
+    case 'S': //left prime
       currentMove = moves[6];
       currentMove.start();
       break;       
-    case 'o': //right
+    case 'd': //right
       currentMove = moves[4];
       currentMove.start();
       break;
-    case 'O': //right prime
+    case 'D': //right prime
       currentMove = moves[5];
       currentMove.start();
       break;    
@@ -152,6 +152,14 @@ void keyPressed() {
 
 void draw() {
   background(50);
+  
+  //Text messages
+  cam.beginHUD();
+  fill(255);
+  textSize(32);
+  text("Hello", 100, 100);
+  cam.endHUD();
+  
   scale(50);
   currentMove.update();
   for (int i = 0; i < cube.length; i++) {
