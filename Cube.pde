@@ -94,11 +94,11 @@ void keyPressed() {
   madeMove = true;
   switch (key) {
     case 'b': //back
-      currentMove = moves[10];
+      currentMove = moves[11];
       currentMove.start();
       break;
     case 'B': //back prime
-      currentMove = moves[11];
+      currentMove = moves[10];
       currentMove.start();
       break;
     case 'g': //front
@@ -110,35 +110,35 @@ void keyPressed() {
       currentMove = moves[9];
       currentMove.start();
     case 'y': //up
-      currentMove = moves[0];
-      currentMove.start();     
-      break;
-    case 'Y': //up prime
-      currentMove = moves[1];
-      currentMove.start();
-      break;      
-    case 'w': //down
       currentMove = moves[2];
       currentMove.start();
       break;
-    case 'W': //down prime
+    case 'Y': //up prime
       currentMove = moves[3];
       currentMove.start();
       break;      
+    case 'w': //down
+      currentMove = moves[1];
+      currentMove.start();
+      break;
+    case 'W': //down prime
+      currentMove = moves[0];
+      currentMove.start();    
+      break;      
     case 'r': //left
-      currentMove = moves[4];
+      currentMove = moves[7];
       currentMove.start();
       break; 
     case 'R': //left prime
-      currentMove = moves[5];
+      currentMove = moves[6];
       currentMove.start();
       break;       
     case 'o': //right
-      currentMove = moves[6];
+      currentMove = moves[4];
       currentMove.start();
       break;
     case 'O': //right prime
-      currentMove = moves[7];
+      currentMove = moves[5];
       currentMove.start();
       break;    
     case '1': //restart
