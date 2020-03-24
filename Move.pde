@@ -24,13 +24,13 @@ class Move {
       if (abs(angle) > HALF_PI) {
         angle = 0;  
         animating = false;
-        if (abs(x) > 0) {
-          turn(Axis.X,x,dir);
+        if (abs(z) > 0) {
+          turn(Axis.Z,z, dir);
+        } else if (abs(x) > 0) {
+          turn(Axis.X,x, dir);
         } else if (abs(y) > 0) {
-          turn(Axis.Y,y,dir);
-        } else if (abs(z) > 0) {
-          turn(Axis.Z,z,dir); 
-        } 
+          turn(Axis.Y,y, dir);
+        }
       }  
     }  
     delay(10);

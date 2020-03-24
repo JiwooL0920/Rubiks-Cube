@@ -166,7 +166,7 @@ void draw() {
   text("a = rotate white", 10, 180);
   text("s = rotate red", 10, 200);
   text("d = rotate orange", 10, 220);
-  text("shift+q|w|e|a|s|d \n= counterclockwise", 10, 260);
+  text("shift+q|w|e|a|s|d \n = counterclockwise", 10, 2);
   cam.endHUD();
   
   scale(50);
