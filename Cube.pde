@@ -18,18 +18,18 @@ enum Axis {
 Square[] cube = new Square[27];
 
 Move[] moves = new Move[] {
-  new Move(Axis.Y,1,1), //U
-  new Move(Axis.Y,1,-1), //U'
-  new Move(Axis.Y,-1,1), //D
-  new Move(Axis.Y,-1,-1), //D'
-  new Move(Axis.X,1,1), //L
-  new Move(Axis.X,1,-1), //L'
-  new Move(Axis.X,-1,1), //R
-  new Move(Axis.X,-1,-1), //R'
-  new Move(Axis.Z,1,1), //F
-  new Move(Axis.Z,1,-1), //F'
-  new Move(Axis.Z,-1,1), //B
-  new Move(Axis.Z,-1,-1) //B'
+  new Move(Axis.Y,1,1),     //U
+  new Move(Axis.Y,1,-1),    //U'
+  new Move(Axis.Y,-1,1),    //D
+  new Move(Axis.Y,-1,-1),   //D'
+  new Move(Axis.X,1,1),     //L
+  new Move(Axis.X,1,-1),    //L'
+  new Move(Axis.X,-1,1),    //R
+  new Move(Axis.X,-1,-1),   //R'
+  new Move(Axis.Z,1,1),     //F
+  new Move(Axis.Z,1,-1),    //F'
+  new Move(Axis.Z,-1,1),    //B
+  new Move(Axis.Z,-1,-1)    //B'
 };
 
 int counter = 0;
@@ -92,16 +92,16 @@ void turn(Axis axis, int index, int dir) {
         break;
       case Y:
         if (sq.y == index) { 
-        matrix.translate(sq.x,sq.z ); 
-        sq.update(round(matrix.m02),sq.y,round(matrix.m12)); 
-        sq.turnFaces(axis,dir);
+          matrix.translate(sq.x,sq.z ); 
+          sq.update(round(matrix.m02),sq.y,round(matrix.m12)); 
+          sq.turnFaces(axis,dir);
         }
         break;
       case Z:
         if (sq.z == index) {
-        matrix.translate(sq.x, sq.y);
-        sq.update(round(matrix.m02), round(matrix.m12), round(sq.z));
-        sq.turnFaces(axis,dir);
+          matrix.translate(sq.x, sq.y);
+          sq.update(round(matrix.m02), round(matrix.m12), round(sq.z));
+          sq.turnFaces(axis,dir);
         }
         break;
     }
@@ -163,18 +163,20 @@ void keyPressed() {
         currentMove.start();
         break;    
       case '2': //restart
+        shuffle(); //get new sequence of random shuffles
+        currentMove = shuffleSequence[counter];
         start = false;
         madeMove = false;
-        counter = 0;
-        shuffle(); //get new sequence of random shuffles
-        //currentMove = shuffleSequence[counter];
         init();
         break;
     }
   } else {
       switch (key) { 
        case '1': //start
-        if (!start) currentMove.start();
+        if (!start) {
+          counter = 0; 
+          currentMove.start();
+        }  
         start = true;
         break; 
       }
@@ -206,10 +208,14 @@ void draw() {
   
   if (currentMove.finished) {
     if (counter < shuffleSequence.length-1) {
+      currentMove.changeToShuffleSpeed();
       counter++;
       currentMove = shuffleSequence[counter];
       currentMove.start();
-    }
+      println(counter);
+    } else if (counter == 14) {
+      currentMove.changeToDefaultSpeed();
+    }  
   }
   
   for (int i = 0; i < cube.length; i++) {
